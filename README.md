@@ -1,279 +1,372 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0c29,30:302b63,60:24243e,100:f7971e&height=220&section=header&text=GSoC%202026%20Portfolio&fontSize=60&fontColor=fff&animation=twinkling&fontAlignY=40&desc=Abhi%20Ramg%20%7C%20Hyderabad%2C%20India%20%7C%20All%20Projects%20by%20Organisation&descAlignY=60&descSize=16" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:1a1a2e,30:16213e,60:e94560,90:f5a623,100:ffd700&height=240&section=header&text=ArtExtract&fontSize=90&fontColor=fff&animation=twinkling&fontAlignY=40&desc=Painting%20In%20A%20Painting%20—%20Hidden%20Images%20with%20AI&descAlignY=60&descSize=18" width="100%"/>
 
 <br/>
 
-[![GSoC 2026](https://img.shields.io/badge/GSoC-2026%20Applicant-F6AE2D?style=for-the-badge&logo=google&logoColor=white)](https://summerofcode.withgoogle.com/)
-[![Orgs](https://img.shields.io/badge/Orgs-ML4Sci%20%7C%20HumanAI%20%7C%20Metaflow-8B5CF6?style=for-the-badge)]()
-[![Projects](https://img.shields.io/badge/Total%20Projects-9-E94560?style=for-the-badge)]()
-[![GitHub](https://img.shields.io/badge/GitHub-abhiram123467-181717?style=for-the-badge&logo=github)](https://github.com/abhiram123467)
+[![GSoC 2026](https://img.shields.io/badge/GSoC-2026%20HumanAI-F6AE2D?style=for-the-badge&logo=google&logoColor=white)](https://summerofcode.withgoogle.com/)
+[![HumanAI](https://img.shields.io/badge/Org-HumanAI-E94560?style=for-the-badge)](https://human-ai.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
+[![WikiArt](https://img.shields.io/badge/Data-WikiArt%203K-F59E0B?style=for-the-badge)]()
+[![NGA](https://img.shields.io/badge/Data-NGA%20Open%20API-10B981?style=for-the-badge)]()
+[![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
+
+<br/>
+
+> **🎨 When a master hides another painting beneath their canvas — can AI find it?**
+>
+> ArtExtract trains a **multi-task CNN-RNN** to classify art by style, artist, and genre on WikiArt, then builds a **Siamese Network** that retrieves visually similar paintings from the National Gallery of Art — together enabling the detection of hidden underpaintings by identifying anomalous style signatures that don't belong.
+
+<br/>
+
+[🚀 Quick Start](#-quick-start) · [🏗 Architecture](#-architecture) · [📊 Results](#-results) · [🔍 The Mystery](#-the-mystery--painting-in-a-painting) · [🎯 GSoC Vision](#-gsoc-2026-vision)
 
 </div>
 
 ---
 
-## 🗺️ Quick Navigation
+## 🖼️ The Mystery — Painting In A Painting
 
-| Org | Projects | Domain |
+Art historians have long known that masters like **Rembrandt, Vermeer, and El Greco** sometimes painted over earlier works — their own or others'. X-ray scans reveal hidden faces, different compositions, even stolen paintings lurking beneath centuries of varnish.
+
+**ArtExtract teaches AI to detect these anomalies computationally:**
+
+```
+Step 1 ─ Train CNN-RNN to recognise each artist's unique visual signature
+                (brushstroke, composition, palette, spatial grammar)
+                
+Step 2 ─ Build Siamese similarity embeddings for the full NGA collection
+
+Step 3 ─ Scan a painting: does any region's style NOT match the declared artist?
+                    ↓
+           Outlier detected → possible underpainting / hidden work 🎭
+```
+
+---
+
+## 👨‍🎨 Mentors
+
+| Mentor | Affiliation | Expertise |
 |---|---|---|
-| [🔭 ML4Sci](#-ml4sci--deeplense) | DeepLense4, DeepLense8, DeepLense9 | Astrophysics AI |
-| [🧠 HumanAI](#-humanai) | SIRA, ArtExtract, OCR1, OCR2, OCR3 | Epidemic ML, Art AI, Historical OCR |
-| [🚀 Metaflow / RenAIssance](#-metaflow--renaissance) | Renaissance OCR3 | Scalable historical OCR |
+| **Emanuele Usai** | University of Alabama | Computer Vision, Art Analysis |
+| **Sergei Gleyzer** | University of Alabama | ML4Sci, Physics-Informed ML |
 
 ---
 
-# 🔭 ML4Sci — DeepLense
+## ✨ Two Tasks, One Vision
 
-> **Organisation:** [ML4Sci (Machine Learning for Science)](https://ml4sci.org/)
-> **Domain:** Gravitational Lensing · Dark Matter · Astrophysics AI
-
----
-
-### 1. DeepLense4 — Foundation Model for Gravitational Lensing
-
-[![Repo](https://img.shields.io/badge/Repo-DeepLense4-4285F4?style=flat-square&logo=github)](https://github.com/abhiram123467/DeepLense4)
-![Task](https://img.shields.io/badge/Task-IX.A%20%2B%20IX.B-8B5CF6?style=flat-square)
-![Model](https://img.shields.io/badge/Model-MAE%20%2B%20ViT-06B6D4?style=flat-square)
-
-| Detail | Info |
-|---|---|
-| **GSoC Task** | Test IX.A (Classification) + Test IX.B (Super-Resolution) |
-| **Architecture** | Masked Autoencoder (MAE) pre-trained on `no_sub` → fine-tuned |
-| **Task IX.A** | 3-class classification: No Substructure / CDM / Axion dark matter |
-| **Task IX.B** | Fine-tune pre-trained model for LR→HR super-resolution |
-| **Metrics** | ROC-AUC (classification) · MSE, SSIM, PSNR (SR) |
-| **Dataset** | Gravitational lensing `.npy` images, 64×64px |
-| **Stack** | PyTorch · timm · einops · scikit-image |
-
-```
-Pre-train MAE on no_sub images
-          ↓
-  Fine-tune IX.A → 3-class classifier (no_sub / CDM / Axion)
-  Fine-tune IX.B → Super-resolution (LR 16×16 → HR 64×64)
-```
+| | Task 1 | Task 2 |
+|---|---|---|
+| **Goal** | Classify WikiArt paintings by Style + Artist + Genre | Retrieve similar paintings from NGA collection |
+| **Model** | CNN-RNN Multi-task Classifier | Siamese Network + Triplet Loss |
+| **Backbone** | ResNet-50 (ImageNet pretrained) | EfficientNet-B2 |
+| **Key Extra** | Outlier detection via embedding distance | Hard negative triplet mining |
+| **Dataset** | WikiArt 3,000 paintings (HuggingFace) | NGA Open Dataset + IIIF API |
+| **Metrics** | Style/Genre Accuracy | Precision@K · mAP |
 
 ---
 
-### 2. DeepLense8 — Physics-Informed Diffusion Models
+## 🏗 Architecture
 
-[![Repo](https://img.shields.io/badge/Repo-DeepLense8-4285F4?style=flat-square&logo=github)](https://github.com/abhiram123467/DeepLense8)
-![Task](https://img.shields.io/badge/Task-Test%20VIII-8B5CF6?style=flat-square)
-![Model](https://img.shields.io/badge/Model-DDPM%20%2B%20U--Net-EE4C2C?style=flat-square)
-
-| Detail | Info |
-|---|---|
-| **GSoC Task** | Test VIII — Generative model for lensing images |
-| **Architecture** | DDPM with U-Net + Sinusoidal Time Embedding |
-| **What it does** | Generates synthetic gravitational lensing images from Gaussian noise |
-| **Metrics** | FID score + qualitative visual assessment |
-| **Dataset** | 10,000 strong lensing images |
-| **Timesteps** | T = 1,000 (linear β schedule) |
-| **Stack** | PyTorch · einops · pytorch-fid |
+### Task 1 — CNN-RNN Multi-Task Art Classifier
 
 ```
-Pure Gaussian Noise  →  1000 Denoising Steps (U-Net)  →  Lensing Image 🔭
+Input: Painting (B, 3, 224, 224)
+         │
+         ▼
+┌──────────────────────────────────────────────────────────────┐
+│  ResNet-50 Backbone (ImageNet pretrained)                    │
+│  Remove avgpool + fc layers — keep spatial feature map       │
+│  Output: (B, 2048, 7, 7)  ← rich spatial features           │
+└─────────────────────┬────────────────────────────────────────┘
+                      │  Treat 7×7 grid = 49 spatial tokens
+                      ▼
+┌──────────────────────────────────────────────────────────────┐
+│  Reshape: (B, 49, 2048)                                      │
+│  BiLSTM (hidden=512, layers=2)                               │
+│  ← captures GLOBAL composition: where objects are relative  │
+│  Output: (B, 49, 1024)                                       │
+└─────────────────────┬────────────────────────────────────────┘
+                      │
+                      ▼
+┌──────────────────────────────────────────────────────────────┐
+│  Attention Pooling                                           │
+│  Score each of the 49 positions → weighted sum              │
+│  Output: (B, 1024)  ← painting embedding                    │
+└───────┬──────────────┬──────────────┬───────────────────────┘
+        │              │              │
+        ▼              ▼              ▼
+  Style Head      Artist Head    Genre Head
+  Linear→softmax  Linear→softmax Linear→softmax
 ```
 
----
-
-### 3. DeepLense9 — Unsupervised Super-Resolution
-
-[![Repo](https://img.shields.io/badge/Repo-DeepLense9-4285F4?style=flat-square&logo=github)](https://github.com/abhiram123467/gsoc2026-deeplense9)
-![Task](https://img.shields.io/badge/Task-VI.A%20%2B%20VI.B-8B5CF6?style=flat-square)
-![Model](https://img.shields.io/badge/Model-RCAN--lite%204×-06B6D4?style=flat-square)
-
-| Detail | Info |
-|---|---|
-| **GSoC Task** | Test VI.A (Simulated SR) + Test VI.B (Real HSC/HST SR) |
-| **Architecture** | RCAN-lite (8 Residual Blocks + Channel Attention + Pixel Shuffle) |
-| **Scale** | 4× super-resolution (16×16 → 64×64) |
-| **Transfer Learning** | VI.A weights → fine-tuned on 300 real HSC/HST telescope pairs |
-| **Loss** | L1 + Sobel Gradient Loss (λ=0.1) — preserves lensing arc sharpness |
-| **Metrics** | MSE · SSIM · PSNR |
-| **Mentors** | Michael Toomey (MIT) · Pranath Reddy · Sergei Gleyzer (Alabama) |
-| **Stack** | PyTorch · scikit-image · seaborn |
-
+**Why CNN + RNN for paintings?**
 ```
-Simulated SR (VI.A) → Real HSC/HST transfer-learning (VI.B)
-  LR 16×16 ─── RCAN-lite 4× ──► HR 64×64
+CNN alone  → sees local texture, brushstroke, colour
+RNN alone  → no visual features
+CNN + RNN  → CNN captures "what is here" at each of 49 grid cells
+             RNN captures "how things relate across the composition"
+             = how art historians actually read a painting
 ```
 
----
+**Multi-Task Loss (weighted):**
+```python
+loss = 1.0 × CrossEntropy(style_pred, style_true)    # primary task
+     + 0.8 × CrossEntropy(artist_pred, artist_true)  # secondary
+     + 0.6 × CrossEntropy(genre_pred, genre_true)    # tertiary
 
-# 🧠 HumanAI
-
-> **Organisation:** [HumanAI](https://human-ai.org/)
-> **Domain:** Epidemic Modelling · Art Intelligence · Historical Document OCR
-
----
-
-### 4. SIRA — Learning the SIR Epidemic Model
-
-[![Repo](https://img.shields.io/badge/Repo-sira--deeplense-E94560?style=flat-square&logo=github)](https://github.com/abhiram123467/sira-deeplense)
-![Model](https://img.shields.io/badge/Model-Neural%20ODE%20%2B%20Symbolic-0F3460?style=flat-square)
-
-| Detail | Info |
-|---|---|
-| **Project** | SIRA — Learning the SIR Epidemic Model |
-| **Architecture** | Physics-Informed Neural ODE (torchdiffeq) vs MLP baseline vs Symbolic SIR |
-| **Data** | 2,000 synthetic epidemics via Gillespie algorithm · β∈[0.1,0.9], γ∈[0.05,0.3] |
-| **Physics Loss** | Conservation (S+I+R=1) + non-negativity penalty · weight=0.1 |
-| **Time horizon** | 160 days · R₀ range: 0.33→18 |
-| **Symbolic Stage** | Learns closed-form sigmoid/Gaussian approximations for S(t), I(t), R(t) |
-| **Metrics** | MSE per compartment (S, I, R) |
-| **Mentors** | Harrison Prosper (FSU) · Olivia Prosper (UTK) · Sergei Gleyzer (Alabama) |
-| **Stack** | PyTorch · torchdiffeq · SciPy · seaborn |
-
+Label smoothing = 0.1  (prevents overconfidence on ambiguous art styles)
 ```
-2000 Gillespie simulations → Neural ODE (physics-constrained) → S(t), I(t), R(t)
-                                      ↓
-                            Symbolic distillation → analytic approximation
+
+**Training Strategy:**
+```
+Phase 1 — Freeze CNN backbone (10 epochs):
+  → Only train BiLSTM + attention + classification heads
+  → LR = 1e-3  (fast convergence on unfrozen layers)
+
+Phase 2 — Unfreeze full model (15 epochs):
+  → Fine-tune ResNet-50 layers too
+  → LR reduced for backbone (avoid forgetting ImageNet features)
+  → Cosine annealing LR schedule
 ```
 
 ---
 
-### 5. ArtExtract — Painting In A Painting
-
-[![Repo](https://img.shields.io/badge/Repo-ArtExtract-E94560?style=flat-square&logo=github)](https://github.com/abhiram123467/artextract-deeplense)
-![Task](https://img.shields.io/badge/Task-1%20%2B%202-8B5CF6?style=flat-square)
-![Model](https://img.shields.io/badge/Model-CNN--RNN%20%2B%20Siamese-F59E0B?style=flat-square)
-
-| Detail | Info |
-|---|---|
-| **Project** | Painting In A Painting — Hidden Images with AI |
-| **Task 1** | CNN-RNN multi-task classification: Style + Artist + Genre on WikiArt (3,000 paintings) |
-| **Task 1 Architecture** | ResNet-50 backbone → BiLSTM (49 spatial tokens) → Attention → 3 heads |
-| **Task 1 Extra** | Outlier detection via cosine distance from class centroid embeddings |
-| **Task 2** | Painting similarity retrieval on National Gallery of Art dataset |
-| **Task 2 Architecture** | EfficientNet-B2 Siamese Network + Triplet Loss (256-dim embedding) |
-| **Task 2 Retrieval** | KNN cosine similarity · Precision@K · mAP |
-| **Metrics** | Style/Genre Accuracy · mAP · Precision@1/3/5/10 |
-| **Mentors** | Emanuele Usai (Alabama) · Sergei Gleyzer (Alabama) |
-| **Stack** | PyTorch · timm · sklearn · seaborn · HuggingFace datasets · NGA Open API |
+### Task 1 — Outlier Detection (The Core Discovery Engine)
 
 ```
-Task 1: WikiArt Painting → ResNet50 → BiLSTM → Style / Artist / Genre
-Task 2: Query Painting   → EfficientNet-B2 → Triplet embed → Top-K similar paintings
+After training, every painting has an embedding vector (B, 1024)
+
+Step 1: Compute class centroid for each style
+        centroid_s = mean(embeddings of all style-s paintings)
+
+Step 2: For each painting, measure distance from its own centroid
+        d(painting_i) = ||embedding_i - centroid_{style_i}||₂
+
+Step 3: Threshold at 95th percentile of all distances
+        distance > threshold → OUTLIER  🚨
+
+Interpretation:
+  Normal painting    → embedding sits close to its style cluster
+  Outlier painting   → embedding is far from its declared style
+                     → its visual language "doesn't belong"
+                     → possible underpainting / misattribution
 ```
 
 ---
 
-### 6. OCR1 — CRNN for Historical Document OCR
-
-[![Repo](https://img.shields.io/badge/Repo-renai--ocr2--test-E94560?style=flat-square&logo=github)](https://github.com/abhiram123467/renai-ocr2-test-abhi)
-![Model](https://img.shields.io/badge/Model-CRNN%20%2B%20CTC-06B6D4?style=flat-square)
-
-| Detail | Info |
-|---|---|
-| **Project** | RenAIssance OCR1 — CRNN text recognition |
-| **Architecture** | CNN (3×Conv) → BiLSTM (2 layers, hidden=256) → FC → CTC decode |
-| **Input** | Historical manuscript images resized to H=32px, variable width |
-| **Preprocessing** | Grayscale → aspect-ratio-preserving resize → normalise |
-| **Classes** | 80 character classes |
-| **Stack** | PyTorch · PIL · torchvision |
-
----
-
-### 7. OCR2 — ⚠️ Notebook Missing
-
-![Status](https://img.shields.io/badge/Status-Notebook%20Not%20Found-FF0000?style=flat-square)
-
-| Detail | Info |
-|---|---|
-| **Project** | RenAIssance OCR2 — intermediate OCR pipeline |
-| **Status** | ⚠️ Notebook file not available — need to recover or recreate |
-| **Likely approach** | Bridges OCR1 (CRNN) and OCR3 (VLM) — possibly attention-based or transformer OCR |
-| **Action needed** | Check Google Colab history or Google Drive for saved notebook |
-
-> 💡 **Recovery tip:** Go to [colab.research.google.com](https://colab.research.google.com) → "Recent" tab — it may still be cached there even without a saved copy.
-
----
-
-### 8. OCR3 — VLM End-to-End Pipeline
-
-[![Repo](https://img.shields.io/badge/Repo-gsoc2026--renaissance--ocr3-E94560?style=flat-square&logo=github)](https://github.com/abhiram123467/gsoc2026-renaissance-ocr3)
-![Model](https://img.shields.io/badge/Model-Gemini%202.0%20Flash%20%2B%20TrOCR-4285F4?style=flat-square)
-
-| Detail | Info |
-|---|---|
-| **Project** | RenAIssance OCR3 — VLM-native pipeline |
-| **Primary Model** | Gemini 2.0 Flash (Google VLM) — direct image→text |
-| **Fallback Model** | Microsoft TrOCR (Vision Encoder + Language Decoder) — no API key needed |
-| **Approach** | Line-by-line strip extraction → VLM transcription per strip |
-| **Test doc** | 17th-century Spanish manuscript (678×710px) |
-| **Output** | 678 characters · diacritics preserved (á, é, ó, ñ, à, ç) |
-| **Stack** | google-generativeai · transformers (TrOCR) · PIL |
-
----
-
-# 🚀 Metaflow / RenAIssance
-
-> **Organisation:** [Metaflow (Netflix OSS)](https://metaflow.org/)
-> **Domain:** Scalable ML Pipelines for Historical Document Processing
-
----
-
-### 9. Renaissance OCR3 — Scalable Historical Manuscript OCR
-
-[![Repo](https://img.shields.io/badge/Repo-gsoc2026--renaissance--ocr3-F6AE2D?style=flat-square&logo=github)](https://github.com/abhiram123467/gsoc2026-renaissance-ocr3)
-![Model](https://img.shields.io/badge/Model-Gemini%20VLM%20%2B%20Metaflow-EE4C2C?style=flat-square)
-
-| Detail | Info |
-|---|---|
-| **Project** | Renaissance OCR3 — production-scale historical document OCR |
-| **Core** | Gemini 2.0 Flash VLM + density analysis preprocessing pipeline |
-| **GSoC Angle** | Metaflow `@batch` integration for processing Vatican Archives at scale |
-| **Demonstrated on** | 17th-century Spanish manuscript — 96% accuracy, diacritics preserved |
-| **Rate-limit resilience** | Exponential backoff + model fallback (2.0-flash → 1.5-flash) |
-| **Stack** | google-generativeai · OpenCV · FastAPI · Streamlit · Metaflow |
+### Task 2 — Siamese Network + Triplet Loss
 
 ```
-Archive (1M pages)
-       ↓  Metaflow @batch
-Density Analysis → Gemini VLM → Structured JSON output
+Training with Triplet Mining:
+
+  Anchor   ── same artist ──► Positive  (pulled together)
+  Anchor   ── diff artist ──► Negative  (pushed apart)
+
+  Triplet Loss:
+  L = max(0, d(anchor, positive) - d(anchor, negative) + margin)
+
+  Hard Negative Mining:
+  Pick the negative CLOSEST to the anchor
+  → forces the model to learn fine-grained artist distinctions
+```
+
+**Siamese Backbone:**
+```
+Input: Painting (B, 3, 224, 224)
+         │
+         ▼
+  EfficientNet-B2 (pretrained) → Global Average Pool → FC(256) → L2-norm
+         │
+         ▼
+  256-dimensional embedding unit sphere
+  (cosine similarity = angular distance between painting styles)
+```
+
+**Retrieval at inference:**
+```
+Query painting → Siamese embed → cosine similarity to all NGA paintings
+               → Top-K nearest neighbours = similar paintings  🎨
 ```
 
 ---
 
-## 📊 Full Portfolio Summary
+## 📊 Results
 
-| # | Project | Org | Key Model | Status |
-|---|---|---|---|---|
-| 1 | DeepLense4 | ML4Sci | MAE + ViT | ✅ Complete |
-| 2 | DeepLense8 | ML4Sci | DDPM + U-Net | ✅ Complete |
-| 3 | DeepLense9 | ML4Sci | RCAN-lite 4× | ✅ Complete |
-| 4 | SIRA | HumanAI | Neural ODE | ✅ Complete |
-| 5 | ArtExtract | HumanAI | CNN-RNN + Siamese | ✅ Complete |
-| 6 | OCR1 (CRNN) | HumanAI | CRNN + CTC | ✅ Complete |
-| 7 | OCR2 | HumanAI | — | ⚠️ Missing |
-| 8 | OCR3 (VLM) | HumanAI | Gemini + TrOCR | ✅ Complete |
-| 9 | Renaissance OCR3 | Metaflow | Gemini + Metaflow | ✅ Complete |
+### Task 1 — WikiArt Classification
+
+```
+══════════════════════════════════════════════════════
+  TASK 1 TEST RESULTS — CNN-RNN Art Classifier
+══════════════════════════════════════════════════════
+  Style  Accuracy :  [run notebook →]  %
+  Genre  Accuracy :  [run notebook →]  %
+──────────────────────────────────────────────────────
+  Outliers found  :  [run notebook →]  paintings
+                     (top 5% by embedding distance)
+══════════════════════════════════════════════════════
+```
+
+### Task 2 — NGA Painting Similarity
+
+```
+══════════════════════════════════════════════════════
+  TASK 2 TEST RESULTS — Siamese Retrieval
+══════════════════════════════════════════════════════
+  Precision@1  :  [run notebook →]
+  Precision@3  :  [run notebook →]
+  Precision@5  :  [run notebook →]
+  Precision@10 :  [run notebook →]
+  mAP          :  [run notebook →]
+══════════════════════════════════════════════════════
+```
+
+### Visual Retrieval — What It Looks Like
+
+```
+┌──────────────┬──────────────┬──────────────┬──────────────┬──────────────┬──────────────┐
+│   QUERY 🔴   │  Result 1    │  Result 2    │  Result 3    │  Result 4    │  Result 5    │
+│  Rembrandt   │  ✓ Sim:0.94  │  ✓ Sim:0.91  │  ✗ Sim:0.78  │  ✓ Sim:0.76  │  ✓ Sim:0.74  │
+│  (portrait)  │  Rembrandt   │  Rembrandt   │  Hals        │  Rembrandt   │  Rembrandt   │
+└──────────────┴──────────────┴──────────────┴──────────────┴──────────────┴──────────────┘
+  ✓ = same artist  ✗ = different artist   Similarity = 1 - cosine_distance
+```
+
+*See `outputs/08_similarity_retrieval.png` generated on run.*
 
 ---
 
-## 🧵 Cross-Project Theme
+## 🚀 Quick Start
 
-All 9 projects share **one unifying principle:**
+### ▶️ Run on Google Colab (Recommended)
 
-> **Embed physics, structure, or domain constraints directly into neural network training — whether that constraint is a differential equation, a conservation law, a physical lens model, or a language prior.**
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/abhiram123467/artextract-deeplense/blob/main/ArtExtract_PaintingInAPainting.ipynb)
 
-| Project | Constraint Type |
-|---|---|
-| DeepLense4/8/9 | Gravitational lensing physics |
-| SIRA | ODE conservation (S+I+R=N) |
-| ArtExtract | Visual composition structure |
-| OCR1/2/3 | Language model priors for text |
-| Renaissance OCR3 | Historical script domain knowledge |
+1. Click **Open in Colab**
+2. `Runtime` → `Change runtime type` → **T4 GPU** → Save
+3. `Runtime` → `Run all`
+4. ☕ ~25–35 min — all visualisations auto-saved to `outputs/`
+
+### 💻 Run Locally
+
+```bash
+# Clone
+git clone https://github.com/abhiram123467/artextract-deeplense
+cd artextract-deeplense
+
+# Install
+pip install torch torchvision timm matplotlib scikit-learn seaborn \
+            tqdm Pillow requests pandas datasets
+
+# Launch notebook
+jupyter notebook ArtExtract_PaintingInAPainting.ipynb
+```
+
+---
+
+## 📁 Project Structure
+
+```
+artextract-deeplense/
+│
+├── 📓 ArtExtract_PaintingInAPainting.ipynb   # Complete pipeline
+│
+├── outputs/
+│   ├── 01_wikiart_samples.png          # Sample paintings from WikiArt
+│   ├── 02_class_distribution.png       # Style/Artist/Genre class counts
+│   ├── 03_training_curves.png          # Loss + accuracy over epochs
+│   ├── 04_confusion_matrix.png         # Style + Genre confusion matrices
+│   ├── 05_tsne_embeddings.png          # t-SNE of painting embeddings
+│   ├── 06_outlier_paintings.png        # Top outlier paintings detected
+│   ├── 07_nga_samples.png              # NGA dataset sample paintings
+│   ├── 08_similarity_retrieval.png     # Query → Top-5 similar paintings
+│   ├── 09_summary_dashboard.png        # Full results dashboard
+│   ├── best_cnn_rnn.pth                # Task 1 trained weights
+│   └── best_siamese.pth                # Task 2 trained weights
+│
+├── README.md
+└── requirements.txt
+```
+
+---
+
+## 🔧 Technical Stack
+
+```
+🤖 Deep Learning   : PyTorch 2.x, torchvision
+🏗  Task 1 Backbone : ResNet-50 (ImageNet pretrained) + BiLSTM + Attention
+🏗  Task 2 Backbone : EfficientNet-B2 (timm) + Triplet Loss
+📊 Metrics         : Accuracy, mAP, Precision@K, NearestNeighbors (sklearn)
+📉 Loss T1         : CrossEntropyLoss (label_smoothing=0.1) · multi-task weighted
+📉 Loss T2         : Triplet Margin Loss (hard negative mining)
+🎨 Dataset 1       : WikiArt via HuggingFace `huggan/wikiart` (3,000 samples)
+🖼️  Dataset 2       : National Gallery of Art Open Dataset + IIIF Image API
+⚙️  Optimizer       : AdamW (weight_decay=1e-4) + CosineAnnealingLR
+📐 Image Size      : 224×224 px (ImageNet standard)
+🌈 Augmentation    : RandomFlip · RandomRotation · ColorJitter
+☁️  Compute         : Google Colab T4 GPU
+```
+
+---
+
+## 🎯 GSoC 2026 Vision
+
+> **Target Organisation: HumanAI**
+> **Project: ArtExtract — Painting In A Painting**
+> **Mentors: Emanuele Usai (Alabama) · Sergei Gleyzer (Alabama)**
+
+Proposed 12-week GSoC sprint:
+
+| Phase | Weeks | Deliverable |
+|---|---|---|
+| **Foundation** | 1–2 | Reproduce + extend with EfficientNet-B3 backbone |
+| **Patch-level Analysis** | 3–5 | Detect *regions* of anomaly (not just whole paintings) |
+| **Deeper Similarity** | 6–7 | CLIP embeddings for zero-shot style retrieval |
+| **Real Underpaintings** | 8–9 | Validate on known X-ray scan datasets (Ghent Altarpiece) |
+| **Web App** | 10–11 | Interactive Streamlit app — upload a painting, find its hidden layers |
+| **GSoC Final** | 12 | Paper draft + public dataset of detected painting-in-painting candidates |
+
+**Why this matters for art history:**
+- 🎭 **Louvre alone has 38,000 paintings** — manual X-ray analysis is impossible at scale
+- 🔬 **AI can flag candidates** for physical X-ray investigation, saving time and cost
+- 🏛 **NGA Open Dataset + WikiArt = 200,000+ paintings** available for automated analysis
+- 🌍 Hidden underpaintings have rewritten attribution of works by Caravaggio, Raphael, Van Eyck
+
+---
+
+## 📚 References
+
+- [ResNet — He et al. 2015](https://arxiv.org/abs/1512.03385) — Deep Residual Learning
+- [EfficientNet — Tan & Le 2019](https://arxiv.org/abs/1905.11946) — backbone for Task 2
+- [BiLSTM — Schuster & Paliwal 1997](https://ieeexplore.ieee.org/document/650093) — bidirectional sequence
+- [Triplet Loss — Schroff et al. 2015](https://arxiv.org/abs/1503.03832) — FaceNet / Siamese
+- [WikiArt HuggingFace](https://huggingface.co/datasets/huggan/wikiart) — training data
+- [NGA Open Data](https://github.com/NationalGalleryOfArt/opendata) — National Gallery of Art
+- [Painting-in-Painting research](https://www.courtauld.ac.uk/) — Courtauld Institute art science
 
 ---
 
 <div align="center">
 
-**Abhi Ramg · Hyderabad, India · GSoC 2026**
+## 👨‍🎨 About the Author
+
+**Abhi Ramg** — AI/ML Researcher & GSoC 2026 Applicant
+
+📍 Hyderabad, India &nbsp;|&nbsp; 🎨 Art AI &nbsp;|&nbsp; 🔭 Astrophysics ML &nbsp;|&nbsp; 🧠 Physics-Informed DL
 
 [![GitHub](https://img.shields.io/badge/GitHub-abhiram123467-181717?style=for-the-badge&logo=github)](https://github.com/abhiram123467)
+[![ArtExtract](https://img.shields.io/badge/Repo-ArtExtract-F59E0B?style=for-the-badge&logo=github)](https://github.com/abhiram123467/artextract-deeplense)
+[![DeepLense8](https://img.shields.io/badge/Also%20See-DeepLense8%20DDPM-8B5CF6?style=for-the-badge&logo=github)](https://github.com/abhiram123467/DeepLense8)
+[![SIRA](https://img.shields.io/badge/Also%20See-SIRA%20Neural%20ODE-E94560?style=for-the-badge&logo=github)](https://github.com/abhiram123467/sira-deeplense)
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:f7971e,50:302b63,100:0f0c29&height=120&section=footer" width="100%"/>
+<br/>
+
+*"Every painting hides a secret. Every master leaves a ghost. We teach machines to listen for them."*
+
+<br/>
+
+**⭐ Star this repo if AI-powered art forensics excites you!**
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:ffd700,40:f5a623,70:e94560,100:1a1a2e&height=130&section=footer" width="100%"/>
 
 </div>
